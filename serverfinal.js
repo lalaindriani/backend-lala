@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 const port = 3333;
-const uri = 'mongodb+srv://lalaindriani:lalaindriani@cluster0.g0dsiuf.mongodb.net/?retryWrites=true&w=majority';
+// const uri = 'mongodb+srv://lalaindriani:lalaindriani@cluster0.g0dsiuf.mongodb.net/?retryWrites=true&w=majority';
 
 const RencanaSchema = new mongoose.Schema({
     rencana: {
@@ -131,7 +131,7 @@ const createRencana = async (req, res) => {
 
   // Assuming the necessary imports are available, such as User model and jwt
 
-async function registerUser(req, res) {
+  const registerUser = async (req, res) => {
     try {
       const { username, password } = req.body;
   
@@ -155,9 +155,9 @@ async function registerUser(req, res) {
       console.error(error);
       res.status(500).json({ error: 'Server error' });
     }
-  }
+  };
   
-  async function login(req, res) {
+  const login = async (req, res) => {
     try {
       const { username, password } = req.body;
   
@@ -184,7 +184,8 @@ async function registerUser(req, res) {
       console.error(error);
       res.status(500).json({ error: 'Server error' });
     }
-  }
+  };
+  
   
 
 // Create a new Rencana
@@ -209,32 +210,17 @@ app.post('/register', registerUser);
 app.post('/login', login);
 
 
-
-
-
-
-
-// Connect to MongoDB
-const connect = async () => {
-  try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to MongoDB!");
-  } catch (error) {
-    throw error;
-  }
-};
-
-mongoose.connection.on("disconnected", () => {
-  console.log("MongoDB disconnected!");
-});
-
-// Start the server
-connect().then(() => {
-  const port = process.env.PORT || 3333;
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+mongoose.connect('mongodb+srv://aninda:aninda@cluster0.nka6ouy.mongodb.net/?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
   });
-});
+
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
